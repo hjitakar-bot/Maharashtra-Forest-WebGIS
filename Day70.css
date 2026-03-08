@@ -1,0 +1,542 @@
+/* =========================
+   GLOBAL
+========================= */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #eef4ff, #dbeafe);
+}
+
+/* =========================
+   HEADER ORANGE THEME
+========================= */
+
+.header {
+  background: linear-gradient(135deg, #ff7b00, #ff8800, #ff9500);
+  padding: 10px 15px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   CINEMATIC SHINE TITLE
+========================= */
+
+.header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shine Line */
+.header h2::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.8) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: shineMove 3s infinite;
+}
+
+@keyframes shineMove {
+  0% { left: -75%; }
+  100% { left: 125%; }
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container {
+  display: flex;
+  height: calc(100vh - 60px);
+  margin-bottom: 40px;
+}
+
+/* =========================
+   SIDEBAR (BLUE CONTRAST)
+========================= */
+
+.sidebar {
+  width: 320px;
+  padding: 20px;
+  background: linear-gradient(145deg, #ffffff, #e0ecff);
+  box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+  border-right: 3px solid #2563eb;
+  position: relative;
+  z-index: 1;
+
+  /* 🔥 Layout Fix Added */
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+/* Animated blue glow */
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 10px;
+  background: linear-gradient(
+    45deg,
+    #1e3a8a,
+    #2563eb,
+    #3b82f6,
+    #2563eb,
+    #1e3a8a
+  );
+  background-size: 300% 300%;
+  animation: glowMove 6s linear infinite;
+  z-index: -1;
+  filter: blur(8px);
+  opacity: 0.6;
+}
+
+@keyframes glowMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Section Titles */
+.sidebar h3 {
+  margin-top: 18px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  font-weight: 700;
+  font-size: 17px;
+  background: linear-gradient(90deg, #1e3a8a, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border-bottom: 2px solid #3b82f6;
+}
+
+/* Information Block */
+.sidebar p {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin: 6px 0;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.sidebar p:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateX(3px);
+}
+
+/* Dynamic Values */
+#districtName,
+#districtID,
+#geomType,
+#areaValue,
+#forestValue {
+  font-weight: bold;
+  color: #1e3a8a;
+  font-size: 15px;
+}
+
+/* =========================
+   DROPDOWN
+========================= */
+
+select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #2563eb;
+  background-color: #f0f7ff;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+select:focus {
+  outline: none;
+  border: 1px solid #1e40af;
+  background-color: #e0ecff;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #5f0f99, #9d4edd);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  flex-shrink: 0;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #7b2cbf, #c77dff);
+  transform: translateY(-2px);
+}
+
+/* Chart Fix */
+#forestChart {
+  max-height: 180px;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   MAP
+========================= */
+
+#map {
+  flex: 1;
+}
+
+/* =========================
+   FIXED FOOTER
+========================= */
+
+.footer {
+  background: linear-gradient(90deg, #1e293b, #334155);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Footer Name Only Colorful */
+.footer span {
+  background: linear-gradient(90deg, #ff4d6d, #c77dff, #4cc9f0, #ffd166);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* =========================
+   LEGEND
+========================= */
+
+.info.legend {
+  background: white;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #333;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+.info.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.9;
+}
+
+/* =========================
+   ACTIVE DISTRICT HIGHLIGHT
+========================= */
+
+.active-district {
+  background: linear-gradient(90deg, #bfdbfe, #93c5fd);
+  border-left: 4px solid #1e3a8a;
+  padding-left: 6px;
+  transition: 0.3s;
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+.dark-mode {
+  background: #1e1e2f !important;
+  color: white !important;
+}
+
+.dark-mode .sidebar {
+  background: linear-gradient(145deg, #2b2d42, #3a0ca3);
+  color: white;
+}
+
+.dark-mode .header {
+  background: linear-gradient(135deg, #240046, #3c096c);
+}
+
+.dark-mode .footer {
+  background: #000814;
+}
+
+/* =========================
+   PINK DARK MODE BUTTON
+========================= */
+
+.dark-toggle-btn {
+  background: linear-gradient(90deg, #ff4d6d, #ff85a1);
+  color: white;
+  box-shadow: 0 0 12px rgba(255, 77, 109, 0.6);
+}
+
+.dark-toggle-btn:hover {
+  background: linear-gradient(90deg, #ff006e, #ff4d6d);
+  transform: translateY(-2px);
+}
+.sidebar input {
+  width: 100%;
+  padding: 6px;
+  margin: 5px 0;
+  border-radius: 6px;
+  border: 1px solid #2563eb;
+}
+.sidebar ul {
+  padding-left: 15px;
+  font-size: 13px;
+}
+
+.sidebar ul li {
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sidebar ul li:hover {
+  transform: translateX(5px);
+  color: #e63946;
+}
+/* ===============================
+   SIDEBAR INPUT ALIGN FIX
+================================ */
+
+/* Common input styling */
+.sidebar input,
+.sidebar select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Forest Range Section */
+.forest-range {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Advanced Query Range (Min + Max Side-by-Side) */
+.query-range {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.query-range input {
+  flex: 1;
+}
+
+/* Buttons Clean Spacing */
+.sidebar button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+}
+/* ===============================
+   🌙 DARK MODE FIX
+================================ */
+
+body.dark-mode {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+
+
+/* Inputs & Select */
+body.dark-mode input,
+body.dark-mode select {
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid #334155;
+}
+
+/* Placeholder text */
+body.dark-mode input::placeholder {
+  color: #cbd5e1;
+}
+
+/* Buttons */
+body.dark-mode button {
+  background: linear-gradient(45deg, #7c3aed, #6366f1);
+  color: #ffffff;
+}
+
+/* Info boxes */
+body.dark-mode .info-box,
+body.dark-mode .stat-box {
+  background-color: #1e293b;
+  color: #ffffff;
+}
+
+/* Legend */
+body.dark-mode .legend {
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid #334155;
+}
+
+/* Chart title / text */
+body.dark-mode canvas {
+  background-color: #0f172a;
+}
+/* =========================
+   🟠 ORANGE SECTION TITLES
+========================= */
+
+.sidebar h2,
+.sidebar h3,
+.sidebar h4 {
+
+  color: #ff6a00 !important;   /* Bright Orange */
+  font-weight: 700 !important; /* Extra Bold */
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+
+  /* underline effect */
+  border-left: 5px solid #ff6a00;
+  padding-left: 10px;
+
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 10px;
+}
+
+.leaflet-popup-content h3 {
+  font-weight: 700;
+}
+/* ==========================
+📱 MOBILE RESPONSIVE SYSTEM
+========================== */
+
+.menu-btn {
+  display: none;
+  font-size: 20px;
+  background: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+
+  .menu-btn {
+    display: inline-block;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 1100;
+  }
+
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    width: 75%;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: 0.3s;
+  }
+
+  .sidebar.show {
+    left: 0;
+  }
+
+  #map {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .header h2 {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  button, select, input {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+}
+.animation-controls{
+display:flex;
+gap:8px;
+margin-bottom:10px;
+}
+
+/* Play Button */
+.play-btn{
+flex:1;
+padding:6px 8px;
+font-size:13px;
+border:none;
+border-radius:6px;
+background:linear-gradient(45deg,#2ecc71,#27ae60);
+color:white;
+cursor:pointer;
+}
+
+/* Pause Button */
+.pause-btn{
+flex:1;
+padding:6px 8px;
+font-size:13px;
+border:none;
+border-radius:6px;
+background:linear-gradient(45deg,#e74c3c,#c0392b);
+color:white;
+cursor:pointer;
+}
+
+.play-btn:hover,
+.pause-btn:hover{
+opacity:0.9;
+}
+.district-label{
+font-size:7px;
+font-weight:bold;
+color:#000;
+background:rgba(255,255,255,0.7);
+border:none;
+box-shadow:none;
+}

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maharashtra Forest Cover Thematic Map (District Wise)</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+<link rel="stylesheet" href="day70.css"/>
+</head>
+
+<body>
+
+<div class="header">
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  <h2>🌍 MahaGeoAI – Forest Intelligence & Risk Analytics Platform 🌍</h2>
+</div>
+
+<div class="container">
+
+  <div class="sidebar">
+<div class="animation-controls">
+
+<button class="play-btn" onclick="startForestAnimation()">▶ Play</button>
+
+<button class="pause-btn" onclick="pauseForestAnimation()">⏸ Pause</button>
+
+</div>
+
+<h3>Forest Change Summary</h3>
+
+<div id="changeStats">
+Total Districts: -
+<br>
+Forest Increase: -
+<br>
+Forest Decrease: -
+<br>
+Stable: -
+</div>
+    <h3>Selected District</h3>
+
+    <p><b>Name:</b> <span id="districtName">None</span></p>
+    <p><b>Feature ID:</b> <span id="districtID">-</span></p>
+    <p><b>Geometry Type:</b> <span id="geomType">-</span></p>
+    <p><b>Area (sq.km):</b> <span id="areaValue">-</span></p>
+    <p><b>Forest Cover:</b> <span id="forestValue">-</span></p>
+
+    <h3>Search District:</h3>
+
+    <select id="districtSelect">
+      <option value="">-- Select District --</option>
+    </select>
+    <button onclick="resetView()">Reset View</button>
+	<h3>Forest Time Series</h3>
+
+<input type="range" id="yearSlider" min="2007" max="2023" step="8" value="2023">
+
+<p>Selected Year: <span id="selectedYear">2023</span></p>
+
+    <h3>Forest Range Filter</h3>
+
+    <label>Min %</label>
+    <input type="number" id="minForest" value="0" min="0" max="100">
+
+    <label>Max %</label>
+    <input type="number" id="maxForest" value="100" min="0" max="100">
+
+    <button onclick="applyForestFilter()">Apply Filter</button>
+    <button onclick="resetForestFilter()">Reset Filter</button>
+
+    <h3>Advanced Query Builder</h3>
+
+    <select id="queryType">
+      <option value="greater">Forest Greater Than</option>
+      <option value="less">Forest Less Than</option>
+      <option value="between">Forest Between</option>
+      <option value="category">Category Based</option>
+    </select>
+
+    <input type="number" id="queryMin" placeholder="Value">
+    <input type="number" id="queryMax" placeholder="Max (for between only)">
+
+    <select id="queryCategory">
+      <option value="">Select Category</option>
+      <option value="Very High">Very High</option>
+      <option value="High">High</option>
+      <option value="Moderate">Moderate</option>
+      <option value="Low">Low</option>
+      <option value="Very Low">Very Low</option>
+    </select>
+
+    <button onclick="applyAdvancedQuery()">Run Query</button>
+    <button onclick="resetAdvancedQuery()">Clear</button>
+
+    <h3>Query Result Summary</h3>
+    <p><b>Total Districts:</b> <span id="queryCount">0</span></p>
+    <p><b>Average Forest:</b> <span id="queryAvg">0 %</span></p>
+
+    <br><br>
+
+    <h3>Top 5 Forest Districts</h3>
+    <ul id="topDistricts"></ul>
+
+    <h3>Bottom 5 Forest Districts</h3>
+    <ul id="bottomDistricts"></ul>
+
+    <h3>Forest Cover Chart</h3>
+    <canvas id="forestChart" height="150"></canvas>
+    <br>
+
+    <p><b>AI Risk Score:</b> <span id="riskScore">-</span></p>
+    <p><b>AI Risk Level:</b> <span id="riskLevel">-</span></p>
+    <p><b>AI Vulnerability Index:</b> <span id="vulnerabilityIndex">-</span></p>
+    <p><b>Forest Hotspots (&lt;10%):</b> <span id="hotspotCount">-</span></p>
+    <p><b>State Avg Forest:</b> <span id="stateAvg">-</span></p>
+
+    <p><b>ML Predicted (5Y):</b> <span id="mlPrediction">-</span></p>
+    <p><b>ML Trend:</b> <span id="mlTrend">-</span></p>
+    <p><b>ML Confidence:</b> <span id="mlConfidence">-</span></p>
+
+    <h3>Compare Two Districts</h3>
+
+    <select id="compare1">
+      <option value="">Select District 1</option>
+    </select>
+
+    <select id="compare2">
+      <option value="">Select District 2</option>
+    </select>
+
+    <button onclick="compareDistricts()">Compare</button>
+
+    <p><b>Difference:</b> <span id="compareDiff">-</span></p>
+
+    <canvas id="compareChart" height="200"></canvas>
+
+    <h3>District Rank</h3>
+    <p><b>Rank:</b> <span id="districtRank">-</span></p>
+    <p><b>Category:</b> <span id="districtCategory">-</span></p>
+
+    <button onclick="downloadReport()">Download PDF Report</button>
+
+    <button class="dark-toggle-btn" onclick="toggleMode()">
+      Toggle Dark / Light Mode
+    </button>
+
+  </div>
+
+  <div id="map"></div>
+
+</div>
+
+<div class="footer">
+  Developed by <span>Harshal Jitkar</span>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="day70.js"></script>
+
+</body>
+</html>
