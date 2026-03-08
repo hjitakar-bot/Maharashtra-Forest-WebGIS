@@ -199,7 +199,7 @@ document.getElementById("compare2").appendChild(c2);
 
   layer.on("mouseout", function(e){
 
-    // जर district click केलेला नसेल तर normal style
+    
     geojsonLayer.resetStyle(e.target);
 
   });
@@ -1150,3 +1150,4 @@ else{
 }
 
 }
+
